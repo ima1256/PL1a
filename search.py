@@ -58,6 +58,7 @@ def tinyMazeSearch(problem):
     from game import Directions
     s = Directions.SOUTH
     w = Directions.WEST
+
     return  [s, s, w, s, w, w, s, w]
 
 def depthFirstSearch(problem):
@@ -82,6 +83,8 @@ def depthFirstSearch(problem):
     w = Directions.WEST
     n = Directions.NORTH
     e = Directions.EAST
+
+    xczvcjxzj = False
     
     pila = Stack()
     visitados = {}
