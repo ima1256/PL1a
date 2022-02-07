@@ -5,6 +5,7 @@ In search.py, you will implement generic search algorithms which are called by
 Pacman agents (in searchAgents.py).
 """
 
+from asyncio.windows_events import NULL
 import util
 
 class SearchProblem:
@@ -79,45 +80,76 @@ def depthFirstSearch(problem):
     "*** YOUR CODE HERE ***"
     from game import Directions
     from util import Stack
-    s = Directions.SOUTH
-    w = Directions.WEST
-    n = Directions.NORTH
-    e = Directions.EAST
-
-    xczvcjxzj = False
     
     pila = Stack()
     visitados = {}
-    posicion = problem.getStartState()
-    pila.push(posicion)
-    visitados.append(posicion)
+    v = problem.getStartState()
+    pila.push(v)
+    visitados[v] = (v, NULL)
     
     while(not pila.isEmpty()):
 
         v = pila.pop()
-
         if(problem.isGoalState(v)):
-            pass
-        else:
-            vecinos = problem.getSuccesors(v)
-            for element in vecinos:
-                w = element[0]
-                if w not in visitados:
-                    visitados.append(w)
-                    pila.push(w)
+            break
 
-    return []
+        vecinos = problem.getSuccessors(v)
+        for element in vecinos:
+            w = element[0]
+            direction = element[1]
+            if w not in visitados:
+                visitados[w] = (v, direction)
+                pila.push(w)
 
+    path = []
+
+    while v != visitados[v][0]:
+        path.insert(0, visitados[v][1])
+        v = visitados[v][0]
+    
     #util.raiseNotDefined()
+    return path
+
 
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    from game import Directions
+    from util import Queue
+    
+    cola = Queue()
+    visitados = {}
+    v = problem.getStartState()
+    cola.push(v)
+    visitados[v] = (v, NULL)
+    
+    while(not cola.isEmpty()):
+
+        v = cola.pop()
+        if(problem.isGoalState(v)):
+            break
+
+        vecinos = problem.getSuccessors(v)
+        for element in vecinos:
+            w = element[0]
+            direction = element[1]
+            if w not in visitados:
+                visitados[w] = (v, direction)
+                cola.push(w)
+
+    path = []
+
+    while v != visitados[v][0]:
+        path.insert(0, visitados[v][1])
+        v = visitados[v][0]
+    
+    #util.raiseNotDefined()
+    return path
 
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
     "*** YOUR CODE HERE ***"
+    options = []
     util.raiseNotDefined()
 
 def nullHeuristic(state, problem=None):
